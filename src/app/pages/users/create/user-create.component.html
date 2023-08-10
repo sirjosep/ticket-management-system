@@ -1,0 +1,61 @@
+<pre>{{ userInsertReqDto.value | json }}</pre>
+<p-toast></p-toast>
+<div class="flex flex-column justify-content-center pl-2 md:pl-6 pr-2">
+    <p class="text-5xl">Create New User</p>
+    <form [formGroup]="userInsertReqDto" (ngSubmit)="createUser()">
+        <div class="grid">
+            <div class="md:col-2 col-3">
+                <label for="email">Email <span class="text-red-700">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <input type="email" pInputText  id="email" placeholder="email@email.com" formControlName="email" class="w-full" required >
+            </div>
+            
+            <div class="md:col-2 col-3">
+                <label for="name" class="form-label">Name <span class="text-red-700">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <input type="text" pInputText  id="name" formControlName="profileName" class="w-full" required>
+            </div>
+
+            <div class="md:col-2 col-3">
+                <label for="phone" class="form-label">Phone <span class="text-red-700">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <input type="text" pInputText  id="phone" formControlName="profilePhone" class="w-full" required>
+            </div>
+
+            <div class="md:col-2 col-3">
+                <label for="address" class="form-label">Address <span class="text-red-700">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <textarea  id="address" rows="3" pInputTextarea formControlName="profileAddress" class="w-full" required></textarea>
+            </div>
+
+            <div class="md:col-2 col-3">
+                <label for="company" class="form-label">Company <span class="text-red-700">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <p-dropdown formControlName="companyId" [options]="companies" optionLabel="companyName" placeholder="Select company..." optionValue="id" styleClass="w-full"></p-dropdown>
+            </div>
+
+            <div class="md:col-2 col-3">
+                <label for="role" class="form-label">Role <span class="text-red-700">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <p-dropdown formControlName="roleId" [options]="roles" optionLabel="roleName" placeholder="Select role..." optionValue="id" styleClass="w-full"></p-dropdown>
+            </div>
+
+            <div class="md:col-2 col-3">
+                <label for="profile-picture" class="form-label">Profile Picture</label>
+            </div>
+            <div class="md:col-10 col-9">
+                <p-fileUpload #file mode="basic" chooseLabel="Upload" accept="image/*" (onSelect)="fileUpload($event,file)"></p-fileUpload>
+            </div>
+        </div>
+        <div class="mt-2">
+            <app-button label="SUBMIT" [loading]="loading" btnType="Submit"></app-button>
+            <button pButton pRipple  routerLink="/users" class="p-button-secondary ml-2">BACK</button>
+        </div>
+    </form>
+</div>

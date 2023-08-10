@@ -1,0 +1,87 @@
+<pre>{{ ticketCommentReqDto.value | json }}</pre>
+<div class="flex gap-1">
+    <p-tag [severity]="changeStatusColor(statusCode)" value="{{ ticketDetail?.statusName }}" [rounded]="true"></p-tag>
+    <p-tag [severity]="changePriorityColor(priorityCode)" value="{{ ticketDetail?.priorityName }}"
+        [rounded]="true"></p-tag>
+</div>
+<p class="text-5xl text-light ">#{{ ticketDetail?.ticketCode }} {{ ticketDetail?.ticketTitle }}</p>
+<p class="text-xl text-color-secondary">by {{ ticketDetail?.profileName }} for product {{ ticketDetail?.productName }}
+    at 2023-07-31 12:00:00</p>
+<div class="container-fluid">
+    <p-tabView>
+        <p-tabPanel header="Main Body">
+            <div class="flex md:flex-row justify-content-start md:justify-content-end my-2 gap-1">
+                <button pButton pRipple type="button" class="p-button-secondary" routerLink="/tickets">BACK</button>
+                <app-button (click)="changeStatus()" [loading]="loadingStatus" label="CHANGE STATUS"></app-button>
+            </div>
+            <div class="flex flex-column md:flex-row justify-content-start">
+                <div class="flex-column md:col-9 col-12">
+                    <h2 class="heading-2"> Problem </h2>
+                    <p class="text-break">
+                        {{ ticketDetail?.ticketBody }}
+                    </p>
+                </div>
+                <div class="flex flex-column md:col-3 col-12">
+                    <h2 class="heading-2">Attachment</h2>
+                    <ul>
+                        <li *ngFor="let f of ticketDetail?.files; let i=index">
+                            <a href="{{ f.id | url }} ">file {{ i+1 }}. {{ f.fileFormat }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </p-tabPanel>
+        <p-tabPanel header="Chat">
+            <h6 class="text-muted pt-2"> this is a chat between customer and developer, please talk within
+                the context and don't do violation or harassment.</h6>
+            <form [formGroup]="ticketCommentReqDto" (ngSubmit)="createComment()">
+                <div class="flex my-2 flex-column flex-md-row">
+                    <div class="grid">
+                        <div class="col-12 md:col-11">
+                            <textarea type="text" class="w-full" id="inputChat" pInputTextarea
+                                placeholder="Type your message..." formControlName="ticketCommentBody"
+                                required></textarea>
+                        </div>
+                        <div class="col-12 md:col-1">
+                            <app-button btnType="submit" icon="pi pi-send" [loading]="loading"></app-button>
+                        </div>
+                    </div>
+                    <p-fileUpload #file mode="basic" (onSelect)="fileUpload($event, file)" chooseLabel="Attachment"
+                        [multiple]="true"></p-fileUpload>
+                </div>
+            </form>
+            <p-card header="Chat">
+                <div class="grid" *ngFor="let tc of ticketComments;">
+                    <div [class]="showBubble(tc.userId)" class="mt-2">
+                        <p-card>
+                            <ng-template pTemplate="header">
+                                <div class="grid pl-3 pt-2">
+                                    <div class="md:col-2">
+                                        <p-avatar
+                                            image="http://localhost:8080/files/{{tc.fileId}}"
+                                            styleClass="mr-2" shape="circle" *ngIf="isPictureExist(tc.fileId)"></p-avatar>
+                                        <i class="pi pi-user" *ngIf="isPictureNotExist(tc.fileId)"
+                                            style="font-size: 2rem;"></i>
+                                    </div>
+                                    <span class="md:col-10">{{tc.profileName}}</span>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="content">
+                                {{tc.ticketCommentBody}}
+                            </ng-template>
+                            <ng-template pTemplate="footer">
+                                <ul>
+                                    <li *ngFor="let f of tc.files; let i=index">
+                                        <a href="http://localhost:8080/files/{{f.id}}"
+                                            class="text-light">File{{i+1}}.{{f.fileFormat}}</a>
+                                    </li>
+                                </ul>
+                            </ng-template>
+                        </p-card>
+                        <p class="text-color-secondary ms-1"> {{tc.createdAt}}</p>
+                    </div>
+                </div>
+            </p-card>
+        </p-tabPanel>
+    </p-tabView>
+</div>

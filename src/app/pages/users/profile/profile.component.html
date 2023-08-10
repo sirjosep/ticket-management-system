@@ -1,0 +1,67 @@
+<div class="flex flex-column justify-content-center pl-2 md:pl-6 r-2">
+    <p class="text-5xl">Profile</p>
+    <form [formGroup]="profileUpdateDto" (ngSubmit)="updateProfile()">
+        <div class="grid">
+            <div class="md:col-2 col-3">
+                <label for="email" class="form-label">Email </label>
+            </div>
+            <div class="md:col-10 col-9">
+                <input [value]="email" pInputText id="email" class="w-full" disabled>
+            </div>
+
+            <div class="md:col-2 col-3">
+                <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <input formControlName="profileName" type="text"  pInputText id="name"
+                    class="w-full" required>
+            </div>
+
+            <div class="md:col-2 col-3">
+                <label for="phone" class="form-label">Phone <span class="text-danger">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <input type="text"  id="phone" formControlName="profilePhone" pInputText
+                    class="w-full" required>
+            </div>
+
+            <div class="md:col-2 col-3">
+                <label for="address" class="form-label">Address <span class="text-danger">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <textarea  id="address" rows="3" formControlName="profileAddress" pInputTextarea
+                    class="w-full" required></textarea>
+            </div>
+
+            <div class="md:col-2 col-3">
+                <label for="company" class="form-label">Company : </label>
+            </div>
+            <div class="md:col-10 col-9">
+                <input [value]="companyName" type="text"  id="company" pInputText class="w-full"
+                    disabled>
+            </div>
+
+            <div class="md:col-2 col-3">
+                <label for="role" class="form-label">Role : </label>
+            </div>
+            <div class="md:col-10 col-9">
+                <input [value]="roleName" type="text"  id="role" pInputText class="w-full" disabled>
+            </div>
+        </div>
+        <app-button [loading]="loading" label="SAVE" btnType="submit"></app-button>
+    </form>
+
+    <p class="text-5xl">Profile Picture</p>
+    <form [formGroup]="profileUpdatePhotoDto" (ngSubmit)="updatePhoto()">
+        <div class="grid">
+            <div class="md:col-2 col-3">
+                <label for="profile-picture" class="form-label">Profile Picture </label>
+            </div>
+            <div class="md:col-10 col-9">
+                <p-fileUpload #file mode="basic" chooseLabel="Upload" accept="image/*"
+                    (onSelect)="fileUpload($event, file)"></p-fileUpload>
+            </div>
+        </div>
+        <app-button [loading]="loading" label="SAVE" btnType="submit"></app-button>
+    </form>
+</div>

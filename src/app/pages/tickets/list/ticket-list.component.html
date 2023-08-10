@@ -1,0 +1,137 @@
+<pre>{{ ticketReqDto.value | json }}</pre>
+<p-table [value]="tickets" [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-gridlines mt-3">
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between gap-1">
+            Ticket Lists
+            <div>
+                <p-button icon="pi pi-plus" label="CREATE TICKET" *ngIf="isCustomer" (onClick)="show()"></p-button>
+                <button pButton pRipple label="DEV ASSIGNMENT LIST" routerLink="/assign-dev" *ngIf="isPic"></button>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th scope="col">No. </th>
+            <th scope="col">Code</th>
+            <th scope="col">Priority</th>
+            <th scope="col">Status</th>
+            <th scope="col">Date</th>
+            <th scope="col">Options</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-t let-i="rowIndex">
+        <tr>
+            <td>{{ i+1 }}</td>
+            <td>{{ t.ticketCode }}</td>
+            <td>
+                <div class="text-light d-flex flex-row flex-md-row">
+                    <p-tag [severity]="changePriorityColor(t.priorityCode)" value="{{ t.priorityName }}"
+                        [rounded]="true"></p-tag>
+                </div>
+            </td>
+            <td>
+                <div class="text-light d-flex">
+                    <p-tag [severity]="changeStatusColor(t.ticketStatusCode)" value="{{ t.ticketStatus }}"
+                        [rounded]="true"></p-tag>
+                </div>
+            </td>
+            <td>{{ t.ticketDate }}</td>
+            <td>
+                <button pButton pRipper type="button" label="DETAIL" (click)="showDetail(t.id, t.ticketStatusCode)" *ngIf="isCustomer"></button>
+                <app-button [loading]="loading" label="DETAIL" (click)="showDetail(t.id, t.ticketStatusCode)" *ngIf="isDeveloper"></app-button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<p-table [value]="reOpenTickets" [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-gridlines mt-3"
+    *ngIf="isPic">
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between gap-1">
+            Reopen Ticket Lists
+            <p-button icon="pi pi-plus" label="CREATE TICKET" *ngIf="isCustomer"></p-button>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th scope="col">No. </th>
+            <th scope="col">Code</th>
+            <th scope="col">Priority</th>
+            <th scope="col">Status</th>
+            <th scope="col">Date</th>
+            <th scope="col">Options</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-t let-i="rowIndex">
+        <tr>
+            <td>{{ i+1 }}</td>
+            <td>{{ t.ticketCode }}</td>
+            <td>
+                <div class="text-light d-flex flex-row flex-md-row">
+                    <p-tag [severity]="changePriorityColor(t.priorityCode)" value="{{ t.priorityName }}"
+                        [rounded]="true"></p-tag>
+                </div>
+            </td>
+            <td>
+                <div class="text-light d-flex">
+                    <p-tag [severity]="changeStatusColor(t.ticketStatusCode)" value="{{ t.ticketStatus }}"
+                        [rounded]="true"></p-tag>
+                </div>
+            </td>
+            <td>{{ t.ticketDate }}</td>
+            <td>
+                <app-button btnType="submit" [loading]="loading" label="CHANGE STATUS"
+                    (click)="changeStatus(t.id)"></app-button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<form [formGroup]="ticketReqDto" (ngSubmit)="createTicket()">
+    <p-dialog header="Header" [(visible)]="visible" styleClass="w-27rem">
+        <ng-template pTemplate="header">
+            <span class="text-xl font-bold">Create New Ticket</span>
+        </ng-template>
+        <div class="grid">
+            <div class="md:col-2 col-3">
+                <label for="ticket-title" class="form-label">Title <span class="text-danger">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <input type="text"  id="ticket-title" pInputText formControlName="ticketTitle" class="w-full" required>
+            </div>
+
+            <div class="md:col-2 col-3">
+                <label for="body" class="form-label">Body <span class="text-danger">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <textarea  id="address" rows="3" pInputTextarea formControlName="ticketBody" class="w-full" required></textarea>
+            </div>
+            <div class="md:col-2 col-3">
+                <label for="priority" class="form-label">Product <span class="text-danger">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <p-dropdown formControlName="productId" [options]="products" optionLabel="productName"
+                    placeholder="Select Product..." optionValue="id" styleClass="w-full"></p-dropdown>
+            </div>
+            <div class="md:col-2 col-3">
+                <label for="priority" class="form-label">Priority <span class="text-danger">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <p-dropdown formControlName="ticketPriorityId" [options]="priorities" optionLabel="ticketPriorityName"
+                    placeholder="Select Priority..." optionValue="id" styleClass="w-full"></p-dropdown>
+            </div>
+            <div class="col-12">
+                <label for="attachment" class="form-label">Attachment </label>
+            </div>
+            <div class="col-12">
+                <p-fileUpload #file mode="basic" icon="pi pi-user" (onSelect)="fileUpload($event, file)"
+                    chooseLabel="Attachment" [multiple]="true"></p-fileUpload>
+            </div>
+            <div class="col-12 flex gap-1">
+                <p-button type="button" (click)="visible = false" styleClass="p-button-danger"
+                    label="Cancel"></p-button>
+                <app-button btnType="submit" [loading]="loading" label="Create"></app-button>
+            </div>
+        </div>
+    </p-dialog>
+</form>

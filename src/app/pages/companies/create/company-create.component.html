@@ -1,0 +1,43 @@
+<pre>{{ companyReqDto.value | json }}</pre>
+<div class="flex flex-column justify-content-center pl-2 md:pl-6 pr-2">
+    <p class="text-5xl">Create New Company</p>
+    <form class="border p-3" [formGroup]="companyReqDto" (ngSubmit)="createCompany()">
+        <div class="grid">
+            <div class="md:col-2 col-3">
+                <label for="company-code" class="form-label">Code <span class="text-red-700">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <input type="text" pInputText  id="company-code" formControlName="companyCode" class="w-full" required>
+            </div>
+
+            <div class="md:col-2 col-3">
+                <label for="name" class="form-label">Name <span class="text-red-700">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <input type="text" pInputText  id="name" formControlName="companyName" class="w-full" required>
+            </div>
+
+            <div class="md:col-2 col-3">
+                <label for="phone" class="form-label">Phone <span class="text-red-700">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <input type="text" pInputText  id="phone" formControlName="companyPhone" class="w-full" required>
+            </div>
+
+            <div class="md:col-2 col-3">
+                <label for="address" class="form-label">Address <span class="text-red-700">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <textarea  id="address" rows="3" formControlName="companyAddress" pInputTextarea class="w-full" required></textarea>
+            </div>
+            <div class="md:col-2 col-3">
+                <label for="profile-picture" class="form-label">Company Logo <span class="text-red-700">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <p-fileUpload #file mode="basic" chooseLabel="Upload" accept="image/*" (onSelect)="fileUpload($event, file)"></p-fileUpload>
+            </div>
+        </div>
+        <app-button btnType="submit" [loading]="loading" label="CREATE"></app-button>
+        <button pButton pRipple class="p-button-secondary ml-2" routerLink="/companies">BACK</button>
+    </form>
+</div>

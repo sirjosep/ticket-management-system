@@ -1,0 +1,63 @@
+<p-table [value]="picAssigns" [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-gridlines mt-3">
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+            PIC Assignment Lists
+            <p-button (click)="showDialog()" icon="pi pi-plus" label="Assign Pic" styleClass="h-3rem"></p-button>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th scope="col">No. </th>
+            <th scope="col">PIC Name</th>
+            <th scope="col">Customer Name</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-pa let-i="rowIndex">
+        <tr>
+            <td>{{ i+1 }}</td>
+            <td>{{ pa.picName }}</td>
+            <td>{{ pa.costumerName }}</td>
+        </tr>
+    </ng-template>
+</p-table>
+<button pButton pRipple class="mt-2 p-button-secondary" routerLink="/users">BACK</button>
+
+<form [formGroup]="picAssignReqDto" (ngSubmit)="assignPic()">
+    <p-dialog header="Header" [(visible)]="visible" styleClass="w-auto md:w-25rem px-15rem">
+        <ng-template pTemplate="header">
+            <span class="text-xl font-bold">Assign new Pic</span>
+        </ng-template>
+        <div class="grid mt-2 gap-1 column-gap-1">
+            <div class="md:col-3">
+                <label for="company" class="form-label">PIC <span class="text-red-700">*</span></label>
+            </div>
+            <div class="md:col-9">
+                <p-dropdown formControlName="picId" [options]="pic" optionLabel="name" placeholder="Select pic..."
+                    optionValue="id"></p-dropdown>
+            </div>
+            <div class="md:col-12">
+                <button pButton pRipper type="button" class="btn btn-primary" (click)="onAdd()">ADD CUSTOMER</button>
+            </div>
+            <div class="col-12" *ngFor="let c of inputs.controls; let i=index;" formArrayName="custId">
+                <div class="grid">
+                    <div class="col-12">
+                        <label for="company" class="form-label">Customer <span class="text-red-700">*</span></label>
+                    </div>
+                    <div class="col-12">
+                        <div class="flex gap-1">
+                            <p-dropdown [formControlName]="i" [options]="customers" optionLabel="name"
+                                placeholder="Select customer..." optionValue="id" appendTo="body"></p-dropdown>
+                            <p-button styleClass="p-button-rounded p-button-danger" icon="pi pi-minus-circle"
+                                (onClick)="onRemove(i)"></p-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mt-1 flex gap-1">
+                <p-button type="button" (click)="visible = false" styleClass="p-button-danger"
+                    label="Cancel"></p-button>
+                <app-button btnType="submit" [loading]="loading" label="SUBMIT"></app-button>
+            </div>
+        </div>
+    </p-dialog>
+</form>

@@ -1,0 +1,20 @@
+<div class="h-screen flex justify-content-center align-items-center">
+    <form [formGroup]="loginReqDto" (ngSubmit)="onLogin()">
+        <h3 class="h5 text-center">LOGIN</h3>
+        <div class="grid">
+            <div class="col-12">
+                <label for="email">Email</label>
+            </div>
+            <div class="col-12">
+                <input id="email" type="email" pInputText formControlName="email" class="w-full">
+            </div>
+            <div class="col-12">
+                <label for="password">Password</label>
+            </div>
+            <div class="col-12">
+                <p-password formControlName="password" [toggleMask]="true" [feedback]="false" inputStyleClass="w-full" styleClass="w-full p-password p-component p-inputwrapper p-input-icon-right"></p-password>
+            </div>
+        </div>
+        <app-button [loading]="loading" btnType="submit" label="Login"></app-button>
+    </form>
+</div>

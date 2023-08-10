@@ -1,0 +1,21 @@
+<p-menubar [model]="items">
+    <ng-template pTemplate="end">
+        <p-overlayPanel #op>
+            <ng-template pTemplate="content">
+                <div class="flex flex-column">
+                    <p-button type="button" label="Profile" styleClass="p-button-secondary p-button-text h-1rem" routerLink="/users/profile"></p-button>
+                    <p-button type="button" label="Change Password" styleClass="p-button-secondary p-button-text h-1rem" routerLink="/users/change-password"></p-button>
+                    <p-divider></p-divider>
+                    <p-button type="button" label="Logout" styleClass="p-button-danger p-button-text h-1rem" (onClick)="logout()"></p-button>
+                </div>
+            </ng-template>
+        </p-overlayPanel>
+        <div class="flex">
+            <p-button (click)="op.toggle($event)" label="Account" styleClass="p-button-text p-button-secondary" *ngIf="isPictureExist">
+                
+            <p-avatar [image]="imgUrl" styleClass="mr-2" shape="circle"></p-avatar>
+            </p-button>
+            <p-button (click)="op.toggle($event)" icon="pi pi-user" label="Account" styleClass="p-button-text p-button-secondary" *ngIf="isPictureNotExist"></p-button>
+        </div>
+    </ng-template>
+</p-menubar>

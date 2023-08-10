@@ -1,0 +1,57 @@
+<pre>{{ companyUpdateReqDto.value | json }}</pre>
+<div class="flex flex-column justify-content-center pl-2 md:pl-6 pr-2">
+    <h3 class="heading-3 my-3">Edit Company</h3>
+    <form [formGroup]="companyUpdateReqDto" (ngSubmit)="updateCompany()">
+        <div class="grid">
+            <div class="md:col-2 col-3">
+                <label for="company-code" class="form-label">Code </label>
+            </div>
+            <div class="md:col-10 col-9">
+                <input [value]="company?.companyCode" type="text" pInputText  id="company-code"
+                    class="w-full" disabled>
+            </div>
+
+            <div class="md:col-2 col-3">
+                <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <input type="text"  id="name" pInputText formControlName="companyName"
+                    class="w-full" required>
+            </div>
+
+            <div class="md:col-2 col-3">
+                <label for="phone" class="form-label">Phone <span class="text-danger">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <input type="text"  id="phone" pInputText formControlName="companyPhone"
+                    class="w-full" required>
+            </div>
+
+            <div class="md:col-2 col-3">
+                <label for="address" class="form-label">Address <span class="text-danger">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <textarea  id="address" rows="3" pInputTextarea formControlName="companyAddress"
+                    class="w-full" required></textarea>
+            </div>
+        </div>
+        <app-button btnType="submit" [loading]="loading" label="SAVE"></app-button>
+    </form>
+
+    <h3 class="heading-3 my-3">Edit Company Logo</h3>
+    <form [formGroup]="companyUpdatePhotoReqDto" (ngSubmit)="updateCompanyPhoto()">
+        <div class="grid">
+            <div class="md:col-2 col-3">
+                <label for="profile-picture" class="form-label">Company Logo <span class="text-danger">*</span></label>
+            </div>
+            <div class="md:col-10 col-9">
+                <p-fileUpload #file mode="basic" chooseLabel="Upload" accept="image/*"
+                    (onSelect)="fileUpload($event, file)"></p-fileUpload>
+            </div>
+        </div>
+        <div class="flex gap-1">
+            <app-button btnType="submit" [loading]="loading" label="SAVE"></app-button>
+            <button pButton pRipple class="btn p-button-secondary" routerLink="/companies">BACK</button>
+        </div>
+    </form>
+</div>

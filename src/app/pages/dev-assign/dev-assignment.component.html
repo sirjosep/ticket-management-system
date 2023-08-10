@@ -1,0 +1,51 @@
+<p-table [value]="devAssigns" [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-gridlines mt-3">
+    <ng-template pTemplate="caption">
+        <div class="flex align-items-center justify-content-between">
+            Dev Assignment Lists
+            <p-button (click)="showDialog()" icon="pi pi-plus" styleClass="h-3rem" label="ASSIGN DEV"></p-button>
+        </div>
+
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th scope="col">No. </th>
+            <th scope="col">Ticket Code</th>
+            <th scope="col">Dev Name</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-da let-i="rowIndex">
+        <tr>
+            <td>{{ i+1 }}</td>
+            <td>{{ da.ticketCode }}</td>
+            <td>{{ da.devName }}</td>
+        </tr>
+    </ng-template>
+</p-table>
+<button pButton pRipple class="p-button-secondary mt-3" routerLink="/tickets">BACK</button>
+<form [formGroup]="devAssignReqDto" (ngSubmit)="assignDev()">
+    <p-dialog header="Header" [(visible)]="visible">
+        <ng-template pTemplate="header">
+            <span class="text-xl font-bold">Assign new Developer</span>
+        </ng-template>
+        <div class="grid">
+            <div class="md:col-2 col-3">
+                <label for="company" class="form-label">Developer</label>
+            </div>
+            <div class="md:col-10 col-9">
+                <p-dropdown formControlName="devId" [options]="devs" optionLabel="name" placeholder="Select developer..."
+                    optionValue="id"></p-dropdown>
+            </div>
+            <div class="md:col-2 col-3">
+                <label for="company" class="form-label">Ticket </label>
+            </div>
+            <div class="md:col-10 col-9">
+                <p-dropdown formControlName="ticketId" [options]="tickets" optionLabel="ticketCode" placeholder="Select pic..."
+                    optionValue="id" appendTo="body"></p-dropdown>
+            </div>
+            <div class="flex gap-1">
+                <button pButton pRippl type="button" class="p-button-secondary" data-bs-dismiss="modal">Cancel</button>
+                <app-button btnType="submit" label="Submit" [loading]="loading"></app-button>
+            </div>
+        </div>
+    </p-dialog>
+</form>
